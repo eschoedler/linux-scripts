@@ -7,11 +7,11 @@ URL="http://ftp.lacnic.net/pub/stats/lacnic/delegated-lacnic-latest"
 declare -a MASCARA
 
 if [ ! -e "${ARQUIVO}" ] || (test `find "${ARQUIVO}" -mtime +1`); then
-   echo -n "Atualizando arquivo do LACNIC... "
+   #echo -n "Atualizando arquivo do LACNIC... "
    wget -q -O "${ARQUIVO}" "${URL}"
    touch "${ARQUIVO}"
-   echo " OK."
-   echo ""
+   #echo " OK."
+   #echo ""
 fi
 
 # monta array com as mascaras
@@ -29,9 +29,6 @@ for PREFIXO in "`cat \"${ARQUIVO}\" | grep 'lacnic|BR|ipv4|'`"; do
    while IFS='|' read -ra LINHA; do
       qtdips=${LINHA[4]}
       echo "${LINHA[3]}/${MASCARA[$qtdips]}"
-      #for i in "${LINHA[@]}"; do
-          # process "$i"
-      #done
    done <<< "${PREFIXO}"
 done
 

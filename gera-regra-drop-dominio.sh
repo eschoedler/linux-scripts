@@ -1,11 +1,12 @@
 #!/bin/bash
 
-DOMINIOS=("app-softwares.com" "mc.sz-gufeng.cn" "huibenguan.com.cn" "a.root-servers.net" "in-addr.arpa")
+DOMINIOS=("exemplo1.com" "exemplo2.net" "exemplo3.org" "wap.exemplo4.co.cn"  "a.root-servers.net")
+REGRA1="/sbin/iptables -A INPUT -p udp --dport 53 -m string --algo bm --hex-string"
+REGRA2="--to 255 -j DROP -m comment --comment \"DROP A"
 
 for DOMINIO in "${DOMINIOS[@]}"; do
-   #echo "obase=16; 48"|bc | sed -e :a -e 's/^.\{0,1\}$/0&/;ta'
 
-   echo -n "${DOMINIO} => "
+   echo -n "${DOMINIO} => ${REGRA1} '"
 
    while IFS='.' read -ra DOM ; do
       for i in "${DOM[@]}"; do
@@ -14,5 +15,5 @@ for DOMINIO in "${DOMINIOS[@]}"; do
       done
     done <<< "${DOMINIO}"
 
-    echo "|000001|"
+    echo "|000001|' ${REGRA2} ${DOMINIO}\""
 done
